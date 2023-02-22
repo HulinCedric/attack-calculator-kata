@@ -1,7 +1,5 @@
-using System;
+using FluentAssertions;
 using Xunit;
-
-using Game;
 
 namespace Game.tests
 {
@@ -9,14 +7,14 @@ namespace Game.tests
     {
         [Fact]
         public void ThisTestShouldPass()
-        {          
-            Assert.Equal(0, 0);
+        {
+            0.Should().Be(0);
         }
 
        [Fact]
         public void ThisTestShouldFail()
         {          
-            Assert.Equal(0, 42);
+            0.Should().Be(42);
         }
     }
 }
