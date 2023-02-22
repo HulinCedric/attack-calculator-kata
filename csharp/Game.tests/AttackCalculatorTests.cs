@@ -1,25 +1,48 @@
-using FluentAssertions;
+using System;
+using ApprovalTests.Combinations;
+using ApprovalTests.Reporters;
+using Bogus;
 using Xunit;
 
 namespace Game.tests;
 
+[UseReporter(typeof(DiffReporter))]
 public class AttackCalculatorTests
 {
-    [Theory]
-    [InlineData(10, 5, "Elf", 12, 8, 3, "Dwarf", 10, 5, 5)]
-    [InlineData(5, 2, "Human", 15, 20, 6, "Orc", 5, 2, 0)]
-    [InlineData(15, 8, "Dwarf", 18, 12, 4, "Elf", 14, 8, 8)]
-    public void Discovery(
-        int attackerArmorClass, int attackerDamageDealt, string attackerRace, int attackerForce,
-        int defenderArmorClass, int defenderDamageDealt, string defenderRace, int defenderForce,
-        int rolledDice,
-        int expectedDamage)
-    {
-        var attacker = new Character(attackerArmorClass, attackerDamageDealt, attackerRace, attackerForce);
-        var defender = new Character(defenderArmorClass, defenderDamageDealt, defenderRace, defenderForce);
-            
-        var damage = AttackCalculator.CalculateDamage(attacker, defender, rolledDice);
+    private readonly Faker faker;
 
-        damage.Should().Be(expectedDamage);
+    public AttackCalculatorTests()
+    {
+        Randomizer.Seed = new Random(42);
+
+        faker = new Faker();
+    }
+
+    [Fact]
+    public void HeroAttacksMonster()
+    {
+        var defendersArmorClass = new[] { 1, 5 };
+        var attackersForce = new[] { 1, 5 };
+        var attackersDamage = new[] { 1, 5 };
+        var diceRolled = new[] { 1, 5, 20 };
+
+        CombinationApprovals.VerifyAllCombinations(
+            (a, b, c, d) => DoAttackCalculation(a, b, c, d),
+            attackersDamage,
+            attackersForce,
+            defendersArmorClass,
+            diceRolled);
+    }
+
+    private static int DoAttackCalculation(
+        int attackersDamage,
+        int attackersForce,
+        int defendersArmorClass,
+        int diceRolled)
+    {
+        var attacker = new Character(1, attackersDamage, "human", attackersForce);
+        var defender = new Character(defendersArmorClass, 1, "orc", 1);
+        var damage = AttackCalculator.CalculateDamage(attacker, defender, diceRolled);
+        return damage;
     }
 }
