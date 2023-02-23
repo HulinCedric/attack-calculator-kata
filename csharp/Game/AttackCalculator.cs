@@ -1,33 +1,28 @@
-﻿namespace Game
+﻿namespace Game;
+
+public class AttackCalculator
 {
-    public class AttackCalculator
+    private readonly IDice dice;
+
+    public AttackCalculator(IDice dice)
+        => this.dice = dice;
+
+    public int CalculateDamage(Character atk, Character def)
     {
-        private readonly IDice dice;
+        var diceRolled = dice.Roll();
+        var damage = atk.damageDealt;
 
-        public AttackCalculator(IDice dice)
-            => this.dice = dice;
-
-        public int CalculateDamage(Character atk, Character def)
+        if (atk.Force + diceRolled > def.armorClass)
         {
-            var diceRolled = dice.Roll();
-            var damage = atk.damageDealt;
+            if (diceRolled == 1)
+                damage = 0;
 
-            if (atk.Force + diceRolled > def.armorClass)
-            {
-                if (diceRolled == 1)
-                {
-                    damage = 0;
-                }
+            if (diceRolled == 20)
+                damage = atk.damageDealt * 2;
 
-                if (diceRolled == 20)
-                {
-                    damage = atk.damageDealt * 2;
-                }
-
-                return damage;
-            }
-
-            return 0;
+            return damage;
         }
+
+        return 0;
     }
 }
