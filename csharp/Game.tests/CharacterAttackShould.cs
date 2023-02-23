@@ -49,4 +49,19 @@ public class CharacterAttackShould
         // Assert
         damage.Should().Be(6);
     }
+    
+    [Fact]
+    public void Should_not_inflict_damage_when_attack_roll_is_1()
+    {
+        // Arrange
+        var attacker = new Character(0, 3, "human", 4);
+        var defender = new Character(4, 0, "orc", 0);
+        var dice = new DeterministicDice(1);
+
+        // Act
+        var damage = attacker.Attack(defender, dice);
+
+        // Assert
+        damage.Should().Be(0);
+    }
 }
