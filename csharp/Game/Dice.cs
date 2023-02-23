@@ -2,13 +2,28 @@ using System;
 
 namespace Game;
 
-public class Dice
+public interface IDice
 {
-    private readonly int sideCount;
-    
-    private readonly Random random = new();
+    int Roll();
+}
 
-    public Dice(int sideCount)
+public class DeterministicDice : IDice
+{
+    private readonly int rolled;
+
+    public DeterministicDice(int rolled)
+        => this.rolled = rolled;
+
+    public int Roll()
+        => rolled;
+}
+
+public class RandomizedDice : IDice
+{
+    private readonly Random random = new();
+    private readonly int sideCount;
+
+    public RandomizedDice(int sideCount)
         => this.sideCount = sideCount;
 
     public int Roll()

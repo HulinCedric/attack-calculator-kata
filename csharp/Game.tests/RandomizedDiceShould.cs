@@ -3,17 +3,17 @@ using Xunit;
 
 namespace Game.tests;
 
-public class DiceShould
+public class RandomizedDiceShould
 {
     private const int DiceSideCount = 20;
-    private readonly Dice dice;
+    private readonly RandomizedDice randomizedDice;
 
-    public DiceShould()
-        => dice = new Dice(DiceSideCount);
+    public RandomizedDiceShould()
+        => randomizedDice = new RandomizedDice(DiceSideCount);
 
     [Fact]
     public void Roll_between_1_and_20()
-        => dice.Roll()
+        => randomizedDice.Roll()
             .Should()
             .BeInRange(1, DiceSideCount);
 }
