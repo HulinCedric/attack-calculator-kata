@@ -24,7 +24,7 @@ public class AttackCalculatorTests
         var defendersArmorClass = new[] { 1, 5 };
         var attackersForce = new[] { 1, 5 };
         var attackersDamage = new[] { 1, 5 };
-        var diceRolled = new[] { 1, 5, 20 };
+        var diceRolled = new[] { 1, 4, 5, 20 };
 
         CombinationApprovals.VerifyAllCombinations(
             (a, b, c, d) => DoAttackCalculation(a, b, c, d),
