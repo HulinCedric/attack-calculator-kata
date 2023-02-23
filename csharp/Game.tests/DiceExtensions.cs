@@ -2,6 +2,6 @@ namespace Game.tests;
 
 public static class DiceExtensions
 {
-    public static IDice DiceValue(this int rolledDiceValue)
+    public static IDice Dice(this int rolledDiceValue)
         => new DeterministicDice(rolledDiceValue);
 }

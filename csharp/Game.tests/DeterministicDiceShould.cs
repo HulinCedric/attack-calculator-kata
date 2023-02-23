@@ -5,16 +5,13 @@ namespace Game.tests;
 
 public class DeterministicDiceShould
 {
-    private const int ConstantRollingValue = 5;
-
-    private readonly IDice dice;
-
-    public DeterministicDiceShould()
-        => dice = new DeterministicDice(ConstantRollingValue);
+    private const int RolledDiceValue = 5;
 
     [Fact]
     public void Roll_always_with_same_value()
-        => dice.Roll()
+        => RolledDiceValue
+            .Dice()
+            .Roll()
             .Should()
-            .Be(ConstantRollingValue);
+            .Be(RolledDiceValue);
 }
