@@ -14,11 +14,8 @@ namespace Game
 
         public static int CalculateDamage(Character atk, Character def, int dice)
         {
-            var defaultAttack = atk.Force;
-            var currentAttack = defaultAttack + dice;
             var damage = atk.damageDealt;
             
-
             if (atk.Force + dice > def.armorClass)
             {
                 if (dice == 1)
@@ -33,10 +30,8 @@ namespace Game
 
                 return damage;
             }
-            else
-            {
-                return 0;
-            }
+
+            return 0;
         }
     }
 }
