@@ -22,13 +22,16 @@ public class Character
         if (!CanInflictDamage(defender, attackRoll))
             return 0;
 
-        return attackRoll switch
+        return GetDamage(attackRoll);
+    }
+
+    private int GetDamage(int attackRoll)
+        => attackRoll switch
         {
             1 => 0,
             20 => weaponDamage * 2,
             _ => weaponDamage
         };
-    }
 
     private bool CanInflictDamage(Character defender, int attackRoll)
     {
