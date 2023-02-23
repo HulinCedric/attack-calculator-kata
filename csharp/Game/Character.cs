@@ -15,10 +15,8 @@ public class Character
         this.force = force;
     }
 
-    public int Attack(Character defender, IDice dice)
+    public int Attack(Character defender, int attackRoll)
     {
-        var attackRoll = dice.Roll();
-
         if (!CanInflictDamage(defender, attackRoll))
             return 0;
 

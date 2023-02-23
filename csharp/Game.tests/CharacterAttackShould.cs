@@ -16,7 +16,7 @@ public class CharacterAttackShould
         var defender = Orc().WithArmorClass(8).Build();
 
         // Act
-        var damage = attacker.Attack(defender, dice);
+        var damage = attacker.Attack(defender, dice.Roll());
 
         // Assert
         damage.Should().Be(0);
@@ -32,7 +32,7 @@ public class CharacterAttackShould
         var defender = Orc().WithArmorClass(8).Build();
 
         // Act
-        var damage = attacker.Attack(defender, dice);
+        var damage = attacker.Attack(defender, dice.Roll());
 
         // Assert
         damage.Should().Be(3);
@@ -48,7 +48,7 @@ public class CharacterAttackShould
         var defender = Orc().WithArmorClass(8).Build();
 
         // Act
-        var damage = attacker.Attack(defender, dice);
+        var damage = attacker.Attack(defender, dice.Roll());
 
         // Assert
         damage.Should().Be(6);
@@ -64,7 +64,7 @@ public class CharacterAttackShould
         var defender = Orc().WithArmorClass(4).Build();
 
         // Act
-        var damage = attacker.Attack(defender, dice);
+        var damage = attacker.Attack(defender, dice.Roll());
 
         // Assert
         damage.Should().Be(0);
