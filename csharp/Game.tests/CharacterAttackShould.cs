@@ -19,7 +19,6 @@ public class CharacterAttackShould
         damage.Should().Be(0);
     }
 
-
     [Fact]
     public void Should_inflict_weapon_damage_when_attack_roll_is_greater_than_defender_armor_class()
     {
@@ -49,7 +48,7 @@ public class CharacterAttackShould
         // Assert
         damage.Should().Be(6);
     }
-    
+
     [Fact]
     public void Should_not_inflict_damage_when_attack_roll_is_1()
     {
