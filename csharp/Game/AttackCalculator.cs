@@ -2,11 +2,14 @@
 {
     public class AttackCalculator
     {
-        private readonly RandomizedDice randomizedDice = new(20);
+        private readonly IDice dice;
+
+        public AttackCalculator(IDice dice)
+            => this.dice = dice;
 
         public int CalculateDamage(Character atk, Character def)
         {
-            var diceRolled = randomizedDice.Roll();
+            var diceRolled = dice.Roll();
             return CalculateDamage(atk, def, diceRolled);
         }
 
