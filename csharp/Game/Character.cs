@@ -2,6 +2,7 @@
 
 public class Character
 {
+    private const int NoDamage = 0;
     private readonly int armorClass;
     private readonly int force;
     private readonly string race;
@@ -16,17 +17,14 @@ public class Character
     }
 
     public int Attack(Character defender, int attackRoll)
-    {
-        if (!CanInflictDamage(defender, attackRoll))
-            return 0;
-
-        return GetDamage(attackRoll);
-    }
+        => CanInflictDamage(defender, attackRoll) ?
+               GetDamage(attackRoll) :
+               NoDamage;
 
     private int GetDamage(int attackRoll)
         => attackRoll switch
         {
-            1 => 0,
+            1 => NoDamage,
             20 => weaponDamage * 2,
             _ => weaponDamage
         };
