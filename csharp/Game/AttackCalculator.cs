@@ -4,26 +4,27 @@ namespace Game
 {
     public class AttackCalculator
     {
-        Random random = new Random();
+        private readonly Dice dice = new();
 
         public int CalculateDamage(Character atk, Character def)
         {
-            int dice = random.Next(1, 20);
-            return CalculateDamage(atk, def, dice);
+            var diceRolled = dice.Roll();
+            return CalculateDamage(atk, def, diceRolled);
         }
 
-        public static int CalculateDamage(Character atk, Character def, int dice)
+
+        public static int CalculateDamage(Character atk, Character def, int diceRolled)
         {
             var damage = atk.damageDealt;
-            
-            if (atk.Force + dice > def.armorClass)
+
+            if (atk.Force + diceRolled > def.armorClass)
             {
-                if (dice == 1)
+                if (diceRolled == 1)
                 {
                     damage = 0;
                 }
 
-                if (dice == 20)
+                if (diceRolled == 20)
                 {
                     damage = atk.damageDealt * 2;
                 }
@@ -33,5 +34,13 @@ namespace Game
 
             return 0;
         }
+    }
+
+    public class Dice
+    {
+        private readonly Random random = new();
+
+        public int Roll()
+            => random.Next(1, 20);
     }
 }
