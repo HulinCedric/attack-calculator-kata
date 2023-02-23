@@ -14,12 +14,11 @@ public class AttackCalculator
         if (atk.Force + diceRolled <= def.armorClass)
             return 0;
 
-        if (diceRolled == 1)
-            return 0;
-
-        if (diceRolled == 20)
-            return atk.damageDealt * 2;
-
-        return atk.damageDealt;
+        return diceRolled switch
+        {
+            1 => 0,
+            20 => atk.damageDealt * 2,
+            _ => atk.damageDealt
+        };
     }
 }
