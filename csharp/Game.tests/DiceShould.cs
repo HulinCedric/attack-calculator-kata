@@ -5,11 +5,15 @@ namespace Game.tests;
 
 public class DiceShould
 {
+    private const int DiceSideCount = 20;
+    private readonly Dice dice;
+
+    public DiceShould()
+        => dice = new Dice(DiceSideCount);
+
     [Fact]
     public void Roll_between_1_and_20()
-    {
-        var rolled = new Dice(20).Roll();
-
-        rolled.Should().BeInRange(1, 20);
-    }
+        => dice.Roll()
+            .Should()
+            .BeInRange(1, DiceSideCount);
 }
