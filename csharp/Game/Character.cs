@@ -2,33 +2,31 @@
 
 public class Character
 {
-    internal readonly int armorClass;
-    internal readonly int damageDealt;
+    private readonly int armorClass;
+    private readonly int force;
+    private readonly string race;
+    private readonly int weaponDamage;
 
     public Character(int armorClass, int weaponDamage, string race, int force)
     {
         this.armorClass = armorClass;
-        damageDealt = weaponDamage;
-        Race = race;
-        Force = force;
+        this.weaponDamage = weaponDamage;
+        this.race = race;
+        this.force = force;
     }
-
-    internal int Force { get; set; }
-
-    public string Race { get; internal set; }
 
     public int Attack(Character other, IDice dice)
     {
         var diceRolled = dice.Roll();
 
-        if (Force + diceRolled <= other.armorClass)
+        if (force + diceRolled <= other.armorClass)
             return 0;
 
         return diceRolled switch
         {
             1 => 0,
-            20 => damageDealt * 2,
-            _ => damageDealt
+            20 => weaponDamage * 2,
+            _ => weaponDamage
         };
     }
 }
