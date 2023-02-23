@@ -16,24 +16,22 @@ public class Character
         this.force = force;
     }
 
-    public int Attack(Character defender, int attackRoll)
-        => CanInflictDamage(defender, attackRoll) ?
-               GetDamage(attackRoll) :
-               NoDamage;
+    public int Attack(Character defender, int diceRoll)
+        => IsAttackMissed(defender, diceRoll) ?
+               NoDamage :
+               ComputeAttackDamage(diceRoll);
 
-    private int GetDamage(int attackRoll)
-        => attackRoll switch
+    private bool IsAttackMissed(Character defender, int diceRoll)
+    {
+        var attackRoll = force + diceRoll;
+        return attackRoll <= defender.armorClass;
+    }
+
+    private int ComputeAttackDamage(int diceRoll)
+        => diceRoll switch
         {
             1 => NoDamage,
             20 => weaponDamage * 2,
             _ => weaponDamage
         };
-
-    private bool CanInflictDamage(Character defender, int attackRoll)
-    {
-        var attackerForce = force + attackRoll;
-        var defenderArmor = defender.armorClass;
-
-        return attackerForce > defenderArmor;
-    }
 }
