@@ -7,18 +7,8 @@ public class AttackCalculator
     public AttackCalculator(IDice dice)
         => this.dice = dice;
 
-    public int CalculateDamage(Character atk, Character def)
+    public IDice Dice
     {
-        var diceRolled = dice.Roll();
-
-        if (atk.Force + diceRolled <= def.armorClass)
-            return 0;
-
-        return diceRolled switch
-        {
-            1 => 0,
-            20 => atk.damageDealt * 2,
-            _ => atk.damageDealt
-        };
+        get { return dice; }
     }
 }
