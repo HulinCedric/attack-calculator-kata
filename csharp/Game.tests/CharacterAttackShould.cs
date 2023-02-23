@@ -9,8 +9,9 @@ public class CharacterAttackShould
     [Fact]
     public void Should_not_inflict_damage_when_attack_roll_is_less_or_equal_than_defender_armor_class()
     {
+        // Arrange
         var attacker = Human().WithForce(2).WithWeaponDamage(3).Build();
-        var dice = new DeterministicDice(6);
+        var dice = 6.DiceValue();
 
         var defender = Orc().WithArmorClass(8).Build();
 
@@ -26,7 +27,7 @@ public class CharacterAttackShould
     {
         // Arrange
         var attacker = Human().WithWeaponDamage(3).Build();
-        var dice = new DeterministicDice(10);
+        var dice = 10.DiceValue();
 
         var defender = Orc().WithArmorClass(8).Build();
 
@@ -42,7 +43,7 @@ public class CharacterAttackShould
     {
         // Arrange
         var attacker = Human().WithForce(2).WithWeaponDamage(3).Build();
-        var dice = new DeterministicDice(20);
+        var dice = 20.DiceValue();
 
         var defender = Orc().WithArmorClass(8).Build();
 
@@ -58,7 +59,7 @@ public class CharacterAttackShould
     {
         // Arrange
         var attacker = Human().WithForce(4).WithWeaponDamage(3).Build();
-        var dice = new DeterministicDice(1);
+        var dice = 1.DiceValue();
 
         var defender = Orc().WithArmorClass(4).Build();
 
