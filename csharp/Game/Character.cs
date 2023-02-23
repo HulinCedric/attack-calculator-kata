@@ -15,19 +15,26 @@ public class Character
         this.force = force;
     }
 
-    public int Attack(Character other, IDice dice)
+    public int Attack(Character defender, IDice dice)
     {
-        var diceRolled = dice.Roll();
+        var attackRoll = dice.Roll();
 
-        var attack = force + diceRolled;
-        if (attack <= other.armorClass)
+        if (!CanInflictDamage(defender, attackRoll))
             return 0;
 
-        return diceRolled switch
+        return attackRoll switch
         {
             1 => 0,
             20 => weaponDamage * 2,
             _ => weaponDamage
         };
+    }
+
+    private bool CanInflictDamage(Character defender, int attackRoll)
+    {
+        var attackerForce = force + attackRoll;
+        var defenderArmor = defender.armorClass;
+
+        return attackerForce > defenderArmor;
     }
 }
