@@ -10,11 +10,6 @@
         public int CalculateDamage(Character atk, Character def)
         {
             var diceRolled = dice.Roll();
-            return CalculateDamage(atk, def, diceRolled);
-        }
-
-        public static int CalculateDamage(Character atk, Character def, int diceRolled)
-        {
             var damage = atk.damageDealt;
 
             if (atk.Force + diceRolled > def.armorClass)
