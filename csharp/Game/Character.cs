@@ -17,9 +17,9 @@ public class Character
 
     public string Race { get; internal set; }
 
-    public int Attack(Character other, AttackCalculator attackCalculator)
+    public int Attack(Character other, IDice dice)
     {
-        var diceRolled = attackCalculator.Dice.Roll();
+        var diceRolled = dice.Roll();
 
         if (Force + diceRolled <= other.armorClass)
             return 0;

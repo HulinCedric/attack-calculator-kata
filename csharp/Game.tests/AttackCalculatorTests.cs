@@ -43,8 +43,7 @@ public class AttackCalculatorTests
         var attacker = new Character(1, attackersDamage, "human", attackersForce);
         var defender = new Character(defendersArmorClass, 1, "orc", 1);
         var dice = new DeterministicDice(diceRolled);
-        var attackCalculator = new AttackCalculator(dice);
-        var damage = attacker.Attack(defender, attackCalculator);
+        var damage = attacker.Attack(defender, dice);
         return damage;
     }
 }
