@@ -19,7 +19,8 @@ public class Character
     {
         var diceRolled = dice.Roll();
 
-        if (force + diceRolled <= other.armorClass)
+        var attack = force + diceRolled;
+        if (attack <= other.armorClass)
             return 0;
 
         return diceRolled switch
