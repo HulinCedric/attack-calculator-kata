@@ -1,17 +1,14 @@
-﻿using System;
-
-namespace Game
+﻿namespace Game
 {
     public class AttackCalculator
     {
-        private readonly Dice dice = new();
+        private readonly Dice dice = new(20);
 
         public int CalculateDamage(Character atk, Character def)
         {
             var diceRolled = dice.Roll();
             return CalculateDamage(atk, def, diceRolled);
         }
-
 
         public static int CalculateDamage(Character atk, Character def, int diceRolled)
         {
@@ -34,13 +31,5 @@ namespace Game
 
             return 0;
         }
-    }
-
-    public class Dice
-    {
-        private readonly Random random = new();
-
-        public int Roll()
-            => random.Next(1, 20);
     }
 }
