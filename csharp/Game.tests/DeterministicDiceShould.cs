@@ -1,4 +1,5 @@
 using FluentAssertions;
+using Game.tests.Common.Extensions;
 using Xunit;
 
 namespace Game.tests;

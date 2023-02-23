@@ -1,4 +1,4 @@
-namespace Game.tests;
+namespace Game.tests.Common.Extensions;
 
 public static class DiceExtensions
 {

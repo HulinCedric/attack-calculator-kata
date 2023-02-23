@@ -1,6 +1,6 @@
 using FluentAssertions;
 using Xunit;
-using static Game.tests.CharacterBuilder;
+using static Game.tests.Common.Builders.CharacterBuilder;
 
 namespace Game.tests;
 
