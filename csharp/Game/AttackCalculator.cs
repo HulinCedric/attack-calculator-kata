@@ -10,19 +10,16 @@ public class AttackCalculator
     public int CalculateDamage(Character atk, Character def)
     {
         var diceRolled = dice.Roll();
-        var damage = atk.damageDealt;
 
-        if (atk.Force + diceRolled > def.armorClass)
-        {
-            if (diceRolled == 1)
-                damage = 0;
+        if (atk.Force + diceRolled <= def.armorClass)
+            return 0;
 
-            if (diceRolled == 20)
-                damage = atk.damageDealt * 2;
+        if (diceRolled == 1)
+            return 0;
 
-            return damage;
-        }
+        if (diceRolled == 20)
+            return atk.damageDealt * 2;
 
-        return 0;
+        return atk.damageDealt;
     }
 }
