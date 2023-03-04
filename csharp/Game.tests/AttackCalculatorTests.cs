@@ -1,37 +1,35 @@
-using System;
-using ApprovalTests.Combinations;
-using ApprovalTests.Reporters;
-using Bogus;
+using System.Text;
+using System.Threading.Tasks;
+using FsCheck;
+using VerifyXunit;
 using Xunit;
 
 namespace Game.tests;
 
-[UseReporter(typeof(DiffReporter))]
+[UsesVerify]
 public class AttackCalculatorTests
 {
-    private readonly Faker faker;
-
-    public AttackCalculatorTests()
-    {
-        Randomizer.Seed = new Random(42);
-
-        faker = new Faker();
-    }
-
     [Fact]
-    public void HeroAttacksMonster()
+    public async Task HeroAttacksMonster()
     {
-        var defendersArmorClass = new[] { 1, 5 };
-        var attackersForce = new[] { 1, 5 };
-        var attackersDamage = new[] { 1, 5 };
+        var output = new StringBuilder();
+
         var diceRolled = new[] { 1, 4, 5, 20 };
 
-        CombinationApprovals.VerifyAllCombinations(
-            (a, b, c, d) => DoAttackCalculation(a, b, c, d),
-            attackersDamage,
-            attackersForce,
-            defendersArmorClass,
-            diceRolled);
+        Prop.ForAll<int, int, int>(
+                (defendersArmorClass, attackersForce, attackersDamage) =>
+                {
+                    output.Append($"[{attackersDamage}, {attackersForce}, {defendersArmorClass}, 1] => ");
+
+                    var result = DoAttackCalculation(attackersDamage, attackersForce, defendersArmorClass, 1);
+
+                    output.AppendLine($"{result}");
+
+                    return true;
+                })
+            .Check(new Configuration { Replay = Random.StdGen.NewStdGen(1145655947, 296144285) });
+
+        await Verifier.Verify(output.ToString());
     }
 
     private static int DoAttackCalculation(
