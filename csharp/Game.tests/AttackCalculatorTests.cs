@@ -1,47 +1,41 @@
 using System;
 using System.Text;
 using System.Threading.Tasks;
-using FsCheck.Xunit;
+using FsCheck;
 using VerifyXunit;
 using Xunit;
+using Random = FsCheck.Random;
 
 namespace Game.tests;
 
-public class SnapshotFixture : IDisposable
+[UsesVerify]
+public class AttackCalculatorTests
 {
-    public SnapshotFixture()
-        => Snapshot = new StringBuilder();
+    private static Arbitrary<Tuple<int, int, int, int>> InputGenerator()
+        => Arb.Default.Int32().Filter(x => x is >= 0 and <= 20).Generator.Four().ToArbitrary();
 
-    public StringBuilder Snapshot { get; }
-
-    public void Dispose()
+    [Fact]
+    public async Task HeroAttacksMonster()
     {
-        // ... clean up test data from the database ...
-    }
-}
+        var output = new StringBuilder();
 
-public class AttackCalculatorTests : VerifyBase, IClassFixture<SnapshotFixture>
-{
-    private readonly SnapshotFixture snapshotFixture;
+        Prop.ForAll(
+                InputGenerator(),
+                inputs =>
+                {
+                    var (attackersDamage, attackersForce, defendersArmorClass, diceRolled) = inputs;
 
-    public AttackCalculatorTests(SnapshotFixture snapshotFixture) : base()
-    {
-        this.snapshotFixture = snapshotFixture;
-    }
+                    output.Append($"[{attackersDamage}, {attackersForce}, {defendersArmorClass}, {diceRolled}] => ");
 
-    [Property(Replay = "1145655947, 296144285")]
-    public async Task HeroAttacksMonster(int defendersArmorClass, int attackersForce, int attackersDamage)
-    {
-        var diceRolled = new[] { 1, 4, 5, 20 };
+                    var result = DoAttackCalculation(attackersDamage, attackersForce, defendersArmorClass, diceRolled);
 
-        snapshotFixture.Snapshot.Append($"[{attackersDamage}, {attackersForce}, {defendersArmorClass}, 1] => ");
+                    output.AppendLine($"{result}");
 
-        var result = DoAttackCalculation(attackersDamage, attackersForce, defendersArmorClass, 1);
+                    return true;
+                })
+            .Check(new Configuration { Replay = Random.StdGen.NewStdGen(1145655947, 296144285) });
 
-        snapshotFixture.Snapshot.AppendLine($"{result}");
-
-        await Verify(snapshotFixture.Snapshot.ToString())
-            .UseParameters(defendersArmorClass, attackersForce, attackersDamage);
+        await Verifier.Verify(output.ToString());
     }
 
     private static int DoAttackCalculation(
