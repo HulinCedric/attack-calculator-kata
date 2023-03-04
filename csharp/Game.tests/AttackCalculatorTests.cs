@@ -1,35 +1,47 @@
+using System;
 using System.Text;
 using System.Threading.Tasks;
-using FsCheck;
+using FsCheck.Xunit;
 using VerifyXunit;
 using Xunit;
 
 namespace Game.tests;
 
-[UsesVerify]
-public class AttackCalculatorTests
+public class SnapshotFixture : IDisposable
 {
-    [Fact]
-    public async Task HeroAttacksMonster()
-    {
-        var output = new StringBuilder();
+    public SnapshotFixture()
+        => Snapshot = new StringBuilder();
 
+    public StringBuilder Snapshot { get; }
+
+    public void Dispose()
+    {
+        // ... clean up test data from the database ...
+    }
+}
+
+public class AttackCalculatorTests : VerifyBase, IClassFixture<SnapshotFixture>
+{
+    private readonly SnapshotFixture snapshotFixture;
+
+    public AttackCalculatorTests(SnapshotFixture snapshotFixture) : base()
+    {
+        this.snapshotFixture = snapshotFixture;
+    }
+
+    [Property(Replay = "1145655947, 296144285")]
+    public async Task HeroAttacksMonster(int defendersArmorClass, int attackersForce, int attackersDamage)
+    {
         var diceRolled = new[] { 1, 4, 5, 20 };
 
-        Prop.ForAll<int, int, int>(
-                (defendersArmorClass, attackersForce, attackersDamage) =>
-                {
-                    output.Append($"[{attackersDamage}, {attackersForce}, {defendersArmorClass}, 1] => ");
+        snapshotFixture.Snapshot.Append($"[{attackersDamage}, {attackersForce}, {defendersArmorClass}, 1] => ");
 
-                    var result = DoAttackCalculation(attackersDamage, attackersForce, defendersArmorClass, 1);
+        var result = DoAttackCalculation(attackersDamage, attackersForce, defendersArmorClass, 1);
 
-                    output.AppendLine($"{result}");
+        snapshotFixture.Snapshot.AppendLine($"{result}");
 
-                    return true;
-                })
-            .Check(new Configuration { Replay = Random.StdGen.NewStdGen(1145655947, 296144285) });
-
-        await Verifier.Verify(output.ToString());
+        await Verify(snapshotFixture.Snapshot.ToString())
+            .UseParameters(defendersArmorClass, attackersForce, attackersDamage);
     }
 
     private static int DoAttackCalculation(
