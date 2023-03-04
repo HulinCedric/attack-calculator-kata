@@ -11,6 +11,14 @@ namespace Game.tests;
 [UsesVerify]
 public class AttackCalculatorTests
 {
+    private readonly Configuration configuration;
+
+    public AttackCalculatorTests()
+    {
+        configuration = Configuration.Default;
+        configuration.Replay = Random.StdGen.NewStdGen(1145655947, 296144285);
+    }
+
     private static Arbitrary<Tuple<int, int, int, int>> InputGenerator()
         => Arb.Default.Int32().Filter(x => x is >= 0 and <= 20).Generator.Four().ToArbitrary();
 
@@ -33,7 +41,7 @@ public class AttackCalculatorTests
 
                     return true;
                 })
-            .Check(new Configuration { Replay = Random.StdGen.NewStdGen(1145655947, 296144285) });
+            .Check(configuration);
 
         await Verifier.Verify(output.ToString());
     }
